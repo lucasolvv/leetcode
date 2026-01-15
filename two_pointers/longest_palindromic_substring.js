@@ -25,42 +25,46 @@ let str2 = "babad";
 /* ------------------------------------------------- */
 // two pointer
 
-function longestPalindromeUsingTwoPointers(s) {
-    if (s.length < 2) return s;
-    let start = 0, maxLen = 0;
 
-    function expandAroundCenter(l, r) {
-        while(l >= 0 && r < s.length && s[l] === s[r]) {
-            l--;
-            r++;
+// segunda resolução:
+
+/*
+o foco é: percorrer a string com ponteiros, testando as substrings e verificando se sao palindromos
+pra isso eu começo do meio e expando para as extremidades com os ponteiros, verificando igualdade. 
+
+tenho uma variavel de para armazenar o valor.
+*/
+
+
+var longestPalindromeUsingTwoPointer = function(s) {
+    //console.log(s)
+    // variavel que recebe a maior substring
+    let longest = "";
+
+    // crio a função que checa as extremidades, os parametros serao o indice do for que vai percorrer a string. 
+    function checkLeftAndRight(left, right, loopValue) {
+        // enquanto expando as extremidades e elas forem iguais
+        while(left >= 0 && right < s.length && s[left] === s[right]) {
+            //console.log(`valor de left no loop ${loopValue}: ${s[left]}`)
+            //console.log(`valor de right no loop ${loopValue}: ${s[right]}`)
+            //checo se o tamanho do que ta sendo verificado é maior do que o que ja tenho armazenado em longest
+            if (right - left + 1 > longest.length) {
+                longest = s.slice(left, right+1);
+                //console.log(`valor de longest no loop ${loopValue}: ${longest}`)
+            }
+            // se nao for continuo expandindo, afinal o objetivo é achar o maior palindromo
+            left--;
+            right++;
         }
-        res = r - l - 1;
-        return res;
     }
 
-    for(let i = 0; i < s.length; i++) {
-        //palindromo impar
-        let len1 = expandAroundCenter(i, i);
-
-        //palindromo par
-        let len2 = expandAroundCenter(i, i+1);
-
-        let len = Math.round(len1, len2);
-
-        if (len > maxLen) {
-            maxLen = len;
-            start = i - Math.floor((len - 1) / 2);
-        }
+    for (let i = 0; i < s.length; i++) {
+        checkLeftAndRight(i, i, i +1);
+        checkLeftAndRight(i, i + 1, i);
     }
 
-    return s.slice(start, start + maxLen);
+    return longest;
 }
 
-
-console.log(longestPalindromeUsingTwoPointers("babad"));
-
-
-function isPalindrome(s){
-    let reversed = s.split("").reverse().join("");
-    return s === reversed;
-};
+console.log(longestPalindromeUsingTwoPointer(str));
+console.log(longestPalindromeUsingTwoPointer(str2));
