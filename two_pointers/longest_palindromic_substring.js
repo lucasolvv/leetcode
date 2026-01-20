@@ -59,7 +59,7 @@ var longestPalindromeUsingTwoPointer = function(s) {
     }
 
     for (let i = 0; i < s.length; i++) {
-        checkLeftAndRight(i, i, i +1);
+        //checkLeftAndRight(i, i, i +1);
         checkLeftAndRight(i, i + 1, i);
     }
 
